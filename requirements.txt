@@ -10,7 +10,7 @@ flask-jwt-extended==4.6.0
 python-socketio[asyncio]
 psycopg2-binary
 Flask-Mail
-appengine-python-standard>=1.0.0
+appengine-python-standard==2.0.0
 google-cloud-storage
 Pillow
 css_inline

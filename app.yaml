@@ -24,3 +24,23 @@ app_engine_apis: true
 inbound_services:
 - mail
 - mail_bounce
+
+env_variables:
+  # Enable the SMTP service.
+  APPENGINE_USE_SMTP_MAIL_SERVICE: "true"
+
+  # --- SMTP Server Configuration ---
+  # The server address
+  APPENGINE_SMTP_HOST: "smtp.dreamhost.com"
+
+  # The recommended port for TLS connections
+  APPENGINE_SMTP_PORT: "587"
+
+  # The username for your SMTP login
+  APPENGINE_SMTP_USER: "noreply@avoor.app"
+
+  # The password (in Google secret manager)
+  APPENGINE_SMTP_PASSWORD: "projects/238504879081/secrets/SMTP_PASSWORD/versions/latest"
+
+  # Use TLS for a secure connection
+  APPENGINE_SMTP_USE_TLS: "true"
