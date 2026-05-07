@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<img
+  src="{%if user.photo_url%}{{user.photo_url}}{%else%}/static/default_pfp.png{%endif%}"
+  class="is-inline-block"
+  style="width: 200px;height: 200px;border-radius: 99px;"
+>
+
+<h1 class="title">
+  {{ user.name }}
+  {% if user.is_admin %}
+  <i data-lucide="shield"></i>
+  {% endif %}
+  {% if user.is_dev %}
+  <i data-lucide="code"></i>
+  {% endif %}
+</h1>
+
+{% if user.is_admin %}
+<p>You are an administrator. Click <a href="{{ url_for('admin.dashboard') }}">here</a> to access the administration panel.</p>
+<br/>
+<p>
+  Developer mode is 
+  {% if user.is_dev %}
+    enabled
+  {% else %}
+    disabled
+  {% endif %}
+  for your account.
+</p>
+<a class="button"
+  href="{{ url_for('admin.toggle_dev') }}">
+  {% if user.is_dev %}
+    Disable
+  {% else %}
+    Enable
+  {% endif %}
+  developer mode
+</a>
+{% endif %}
+{% endblock %}

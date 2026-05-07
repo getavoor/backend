@@ -1,0 +1,74 @@
+{% extends "admin_base.html" %}
+
+{% block incontent %}
+<h1 class="title">
+    Restaurants
+</h1>
+<a class="button" data-tooltip="Updates the saved information about all restaurants. WARNING: this replaces the saved information"
+    href="{{ url_for('admin.update_restaurants') }}">
+    Update all restaurants
+</a>
+<a class="button" data-tooltip="Loads missing information about every restaurant."
+    href="{{ url_for('admin.fill_in_restaurants') }}">
+    Load missing information
+</a>
+<hr>
+<p>There are {{restno}} registered restaurants.</p>
+{% if restno > 0 %}
+
+{%if show_dev %}
+<p class="has-text-grey">Test restaurants are marked in grey. These restaurants don't exist in real life and are used for testing various features of Avoor.</p>
+{%endif%}
+<table class="table is-fullwidth">
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <th>Rating</th>
+            <th>Address</th>
+            {%if show_dev %}
+                <th>Place ID</th>
+            {%endif%}
+            <th>Actions</th>
+        </tr>
+        {% for restaurant in restaurants %}
+        <tr>
+            <td {%if restaurant.is_test %} class="has-text-grey" {%endif%}>
+                {%if restaurant.is_test %}
+                    <i>{{restaurant.name}} (test restaurant)</i>
+                {% else %}
+                    {{restaurant.name}}
+                {%endif%}
+            </td>
+            <td {%if restaurant.is_test %} class="has-text-grey" {%endif%}>
+                {%if restaurant.rating != None %}
+                    {{restaurant.rating}} ★
+                    {%if restaurant.review_amount != None %}
+                        (based on {{restaurant.review_amount}} ratings)
+                    {%endif%}
+                {% else %}
+                    <i>(unknown)</i>
+                {%endif%}
+            </td>
+            <td {%if restaurant.is_test %} class="has-text-grey" {%endif%}>
+                {%if restaurant.address != None %}
+                    {{restaurant.address}}
+                {% else %}
+                    <i>(unknown)</i>
+                {%endif%}
+            </td>
+            {%if show_dev %}
+            <td>
+                <pre>{{restaurant.maps_id}}</pre>
+            </td>
+            {%endif%}
+            <td>
+                {%if not restaurant.is_test %}
+                    <a class="button" href="{{url_for('admin.fill_restaurant',db_id=restaurant.id)}}">Load missing information</a>
+                {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

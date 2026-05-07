@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<body style="font-family: 'Segoe UI','Roboto',sans-serif;text-align: center;">
+<style>
+    /* this stylesheet gets inlined when an email is sent, so there is no need
+     * to add "style" elements to any element except the body */
+
+    .button {
+        display: inline-block;
+        color: white;
+        padding: 10px 30px;
+        margin: 10px 30px;
+        text-decoration: none;
+        font-size: large;
+        border-radius: 10px;
+    }
+    .btn-link {
+        color: white;
+        text-decoration: none;
+    }
+    .info {
+        margin: 16px;
+        font-size: small;
+        color: grey;
+    }
+    .info p {
+        margin: 0px;
+    }
+    .info a {
+        color: grey;
+    }
+    table {
+        margin: 0 auto;
+    }
+</style>
+<h1>Welcome to Avoor!</h1>
+<p>
+    Thanks for signing up for Avoor. One quick step before you get started — tap the button below to confirm your email address.
+</p>
+<table cellspacing="0" cellpadding="0">
+  <tr>
+      <td>
+          <table cellspacing="0" cellpadding="0">
+              <tr>
+                  <!-- #8D4E29 is the color used for buttons in the app when dynamic color is unavailable -->
+                  <td class="button" bgcolor="#8D4E29">
+                      <a class="btn-link" href="{{ confirm_url }}">Confirm</a>
+                  </td>
+              </tr>
+          </table>
+      </td>
+  </tr>
+</table>
+<div class="info">
+    <p>If that doesn't work, use this link:</p>
+    <p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+</div>
+<br />
+<p>Cheers!</p>

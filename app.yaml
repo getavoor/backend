@@ -1,0 +1,26 @@
+runtime: python311
+service_account: backend-runner@avoor-app.iam.gserviceaccount.com
+
+# F1 is too weak to run the backend, so F2 is required.
+instance_class: F2
+
+handlers:
+
+  # This configures Google App Engine to serve the public directory.
+  - url: /public
+    static_dir: public
+
+  # This routes all requests not caught above to the Avoor server.
+  - url: /.*
+    script: auto
+
+# A custom entry point is required for this app
+entrypoint: python3 -m server
+
+# Enable App Engine specific APIs.
+app_engine_apis: true
+
+# Allow usage of the mail API.
+inbound_services:
+- mail
+- mail_bounce

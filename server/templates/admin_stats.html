@@ -1,0 +1,21 @@
+{% extends "admin_base.html" %}
+
+{% block incontent %}
+<h1 class="title">
+  Statistics
+</h1>
+<nav class="level">
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Users</p>
+      <p class="title">{{ stats.users }}</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Restaurants</p>
+      <p class="title">{{ stats.restaurants }}</p>
+    </div>
+  </div>
+</nav>
+{% endblock %}

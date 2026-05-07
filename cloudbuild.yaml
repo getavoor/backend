@@ -1,0 +1,31 @@
+# Google Cloud Build configuration
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  # Use a Python container to generate the .env file.
+  - name: "python"
+    # Start the setup script in Python. Also ask it to make a .env file.
+    entrypoint: 'python'
+    args: ['setup.py', '-e']
+    # Pass the environment variables from the build configuration.
+    # These variables will be visible to Cloud Build, which will pass them to App Engine.
+    env:
+      - 'AVR_GAK=$_GEM_APIKEY'
+      - 'AVR_DB_SK=$_DB_SECRET'
+      - 'AVR_DB_URL=$_DB_URL'
+      - 'AVR_JW_SK=$_JWT_SECRET'
+      - 'AVR_PORT=$_PORT'
+      - 'AVR_SI_SK=$_SOCKET_SECRET'
+      - 'AVR_FS=$_FILE_STORAGE'
+      - 'AVR_TK_SL=$_TOKEN_SALT'
+      - 'AVR_EM_AD=$_EMAIL_ADDRESS'
+      - 'AVR_EM_PW=$_EMAIL_PASSWORD'
+
+  # Use a container with Google's Cloud SDK to deploy the backend to App Engine.
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    # Start bash with the arguments below.
+    entrypoint: 'bash'
+    # This generates a .env file and deploys the project to App Engine.
+    args: ['-c', 'gcloud config set project ${PROJECT_ID} && gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --project=${PROJECT_ID}']
