@@ -102,8 +102,12 @@ def signup_post():
     return redirect(url_for('main.index'))
 
 @auth.route("/confirm/<token>")
-@login_required
-def confirm_email(token):
+def confirm_redirector(token):
+    # if the device is mobile, redirect them to the avoor deeplink
+    medium = request.args.get('medium')
+    if medium == "apim":
+        return redirect("avoor://l/confirm/" + token)
+
     if current_user.is_confirmed:
         flash("Account already confirmed.", "success")
         return redirect(url_for("main.index"))
@@ -195,7 +199,7 @@ def reg_api():
     # generate a token
     token = generate_token(user.email)
     # create the confirm URL
-    confirm_url = url_for("auth.confirm_email", token=token, _external=True)
+    confirm_url = url_for("auth.confirm_email", token=token, _external=True, medium="apim")
     # render the registration email template
     html = render_template("email_reg.html", confirm_url=confirm_url)
     subject = "Avoor: Please confirm your email"
