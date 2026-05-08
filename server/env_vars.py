@@ -52,7 +52,7 @@ if os.environ.get("APPENGINE_USE_SMTP_MAIL_SERVICE", None) is not None:
         """
         secret_name = os.environ.get(name, None)
         if secret_name is not None:
-            os.environ[name] = client.access_secret_version(secret_name)
+            os.environ[name] = client.access_secret_version(name=secret_name).payload.data.decode("utf-8")
 
     # Load variables defined as Google secrets in app.yaml
     load_variable("APPENGINE_SMTP_PASSWORD")
