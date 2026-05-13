@@ -91,7 +91,7 @@ def signup_post():
     # generate a token
     token = generate_token(new_user.email)
     # create the confirm URL
-    confirm_url = url_for("auth.confirm_email", token=token, _external=True)
+    confirm_url = url_for("auth.confirm_redirector", token=token, _external=True)
     # render the registration email template
     html = render_template("email_reg.html", confirm_url=confirm_url)
     subject = "Avoor: Please confirm your email"
@@ -199,7 +199,7 @@ def reg_api():
     # generate a token
     token = generate_token(user.email)
     # create the confirm URL
-    confirm_url = url_for("auth.confirm_email", token=token, _external=True, medium="apim")
+    confirm_url = url_for("auth.confirm_redirector", token=token, _external=True, medium="apim")
     # render the registration email template
     html = render_template("email_reg.html", confirm_url=confirm_url)
     subject = "Avoor: Please confirm your email"
@@ -223,7 +223,7 @@ def resend(current_api_user):
     # generate a token
     token = generate_token(current_api_user.email)
     # create the confirm URL
-    confirm_url = url_for("auth.confirm_email", token=token, _external=True)
+    confirm_url = url_for("auth.confirm_redirector", token=token, _external=True, medium="apim")
     # render the registration email template
     html = render_template("email_reg.html", confirm_url=confirm_url)
     subject = "Avoor: Please confirm your email"
