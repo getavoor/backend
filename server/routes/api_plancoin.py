@@ -26,7 +26,7 @@ def add_plancoins(current_user):
         return {"msg": "Invalid amount"}, 400
 
     # Create a transaction record
-    transaction = PlancoinReward(
+    transaction = PlancoinTransaction(
         user_id=current_user.id,
         amount=amount,
         reason=content.get("reason", "Added from client")
