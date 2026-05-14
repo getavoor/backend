@@ -103,19 +103,29 @@ def signup_post():
 
 @auth.route("/confirm/<token>")
 def confirm_redirector(token):
-    # if the device is mobile, redirect them to the avoor deeplink
+    # get the email from the token
+    email = confirm_token(token)
+    # if the device is mobile:
     medium = request.args.get('medium')
     if medium == "apim":
+        # find the user the token is for
+        user = User.query.filter_by(email=email).first_or_404()
+        # if the user isn't confirmed yet, confirm it
+        if user and not user.is_confirmed:
+            print("confirmed user")
+            #user.is_confirmed = True
+            db.session.add(user)
+            db.session.commit()
+        print(user.is_confirmed)
+        # redirect them to the avoor deeplink
         return redirect("avoor://l/confirm/" + token)
 
-    if current_user.is_confirmed:
-        flash("Account already confirmed.", "success")
-        return redirect(url_for("main.index"))
-    email = confirm_token(token)
+    # the rest of this function is for the webui
+
+    # confirm the currently signed in user, if the same user is signed in to the webui
     user = User.query.filter_by(email=current_user.email).first_or_404()
-    if user.email == email:
+    if user.email == email and not user.is_confirmed:
         user.is_confirmed = True
-        #user.confirmed_on = datetime.now()
         db.session.add(user)
         db.session.commit()
         flash("You have confirmed your account. Thanks!", "success")
@@ -191,7 +201,7 @@ def reg_api():
         return {"msg":"User already exists"}, 400
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2:sha512'), is_confirmed=False)
+    user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2:sha512'), is_confirmed=False, freeze_count=3)
     # add the new user to the database
     db.session.add(user)
     db.session.commit()
